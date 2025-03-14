@@ -1,13 +1,9 @@
 import express from "express";
-import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
 import cors from "cors";
 import dotenv from "dotenv";
-import bcrypt from "bcryptjs";
-import User from './model/user'
-import FormModel from "./model/form";
 import auth from "./routes/auth"
-import post from "./routes/post"
+
 dotenv.config();
 
 const app = express();
@@ -16,7 +12,6 @@ app.use(cors());
 const Port = 5050;
 
 app.use("/auth",auth)
-app.use("/form",post)
 // Connect to MongoDB
 mongoose
   .connect(process.env.MONGO_URL)

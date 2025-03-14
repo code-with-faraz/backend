@@ -5,8 +5,8 @@ import User from "../model/user"; // Import User model
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 router.post("/signup", async (req, res) => {
-  const { name, email, password,mobile } = req.body;
-  if (!name || !email || !password || !mobile) {
+  const { name, email, password } = req.body;
+  if (!name || !email || !password ) {
     return res.status(400).json({ error: "Please fill in all fields." });
   }
 
@@ -17,7 +17,7 @@ router.post("/signup", async (req, res) => {
     }
 
     const hashedPassword = await bcrypt.hash(password, 12);
-    const user = new User({ name, email, password: hashedPassword, mobile });
+    const user = new User({ name, email, password: hashedPassword});
 
     await user.save();
     res.json({ success: "Account created" });
@@ -41,7 +41,7 @@ router.post("/login", async (req, res) => {
     const match = await bcrypt.compare(password, found.password);
     if (match) {
       const token = jwt.sign({ id: found._id }, process.env.JWT_SECRET);
-      res.json({ token, uid: found._id ,email:found.email,name:found.name,mobile:found.mobile });
+      res.json({ token, uid: found._id ,email:found.email,name:found.name });
     } else {
       res.status(400).json({ error: "Invalid credentials" });
     }
